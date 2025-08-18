@@ -11,10 +11,13 @@ class ClientHandler:
 
         print(f"server has started | {socket.gethostbyname(socket.gethostname())}")
 
+        self.clients = {} # ID:DATA
+
         self.running = True
         self.lock = threading.Lock()
 
     def connect_client(self, conn, addr):
+        self.clients[len(self.clients)] = {}
         try:
             while self.running:
                 # Placeholder for actual recv/send logic

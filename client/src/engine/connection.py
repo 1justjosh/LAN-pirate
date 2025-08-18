@@ -1,6 +1,6 @@
 from client.src.engine.settings import *
 
-def try_connect() -> socket.socket | None:
+def try_connect(server_address, server_port) -> socket.socket | None:
     """
     try and connect to the server and returns if the client connected successfully or not
 
@@ -13,7 +13,7 @@ def try_connect() -> socket.socket | None:
 
     try:
         print("trying to connect")
-        conn.connect((SERVER_ADDRESS, SERVER_PORT))
+        conn.connect((server_address, server_port))
         print("Connected successfully")
         return conn
     except ConnectionRefusedError as e:

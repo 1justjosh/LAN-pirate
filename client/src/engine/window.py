@@ -1,6 +1,7 @@
 from client.src.engine.settings import *
 from client.src.engine.connection import try_connect, disconnect
 from client.src.ui.connect_to_server import ConnectToServerUI
+from client.src.engine.scene import Scene
 
 class Window:
     def __init__(self):
@@ -17,10 +18,12 @@ class Window:
 
         self.connect_to_server_ui = ConnectToServerUI()
 
+        self.scene = Scene() #Load world data after connecting to server
+
 
     def connect_to_server(self):
         while self.conn is None and self.running:
-            self.conn = try_connect()
+            self.conn = try_connect(SERVER_ADDRESS, SERVER_PORT)
 
     def event_handler(self):
         for event in pg.event.get():
@@ -32,8 +35,12 @@ class Window:
                 sys.exit()
 
     def render(self):
+        self.win.fill((10,40,80))
+
         if self.connect.is_alive():
             self.connect_to_server_ui.render()
+        else:
+            self.scene.render()
 
         pg.display.flip()
 
@@ -42,6 +49,8 @@ class Window:
 
         if self.connect.is_alive():
             self.connect_to_server_ui.update(dt)
+        else:
+            self.scene.update(dt)
 
     def run(self):
         while self.running:
